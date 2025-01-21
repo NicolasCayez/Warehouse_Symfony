@@ -19,11 +19,11 @@ class Product
      * @var Collection<int, Family>
      */
     #[ORM\ManyToMany(targetEntity: Family::class, inversedBy: 'products')]
-    private Collection $family_id;
+    private Collection $family;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Brand $brand_id = null;
+    private ?Brand $brand = null;
 
     /**
      * @var Collection<int, ProductSize>
@@ -45,7 +45,7 @@ class Product
 
     #[ORM\ManyToOne(inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Supplier $supplier_id = null;
+    private ?Supplier $supplier = null;
 
     /**
      * @var Collection<int, ProductMovement>
@@ -53,13 +53,20 @@ class Product
     #[ORM\OneToMany(targetEntity: ProductMovement::class, mappedBy: 'product_id')]
     private Collection $productMovements;
 
+    /**
+     * @var Collection<int, Warehouse>
+     */
+    #[ORM\ManyToMany(targetEntity: Warehouse::class, mappedBy: 'product_id')]
+    private Collection $warehouses;
+
     public function __construct()
     {
-        $this->family_id = new ArrayCollection();
+        $this->family = new ArrayCollection();
         $this->productSizes = new ArrayCollection();
         $this->productColors = new ArrayCollection();
         $this->productInfos = new ArrayCollection();
         $this->productMovements = new ArrayCollection();
+        $this->warehouses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -70,35 +77,35 @@ class Product
     /**
      * @return Collection<int, Family>
      */
-    public function getFamilyId(): Collection
+    public function getFamily(): Collection
     {
-        return $this->family_id;
+        return $this->family;
     }
 
-    public function addFamilyId(Family $familyId): static
+    public function addFamilyId(Family $family): static
     {
-        if (!$this->family_id->contains($familyId)) {
-            $this->family_id->add($familyId);
+        if (!$this->family->contains($family)) {
+            $this->family->add($family);
         }
 
         return $this;
     }
 
-    public function removeFamilyId(Family $familyId): static
+    public function removeFamilyId(Family $family): static
     {
-        $this->family_id->removeElement($familyId);
+        $this->family->removeElement($family);
 
         return $this;
     }
 
-    public function getBrandId(): ?Brand
+    public function getBrand(): ?Brand
     {
-        return $this->brand_id;
+        return $this->brand;
     }
 
-    public function setBrandId(?Brand $brand_id): static
+    public function setBrand(?Brand $brand): static
     {
-        $this->brand_id = $brand_id;
+        $this->brand = $brand;
 
         return $this;
     }
@@ -115,7 +122,7 @@ class Product
     {
         if (!$this->productSizes->contains($productSize)) {
             $this->productSizes->add($productSize);
-            $productSize->setProductId($this);
+            $productSize->setProduct($this);
         }
 
         return $this;
@@ -125,8 +132,8 @@ class Product
     {
         if ($this->productSizes->removeElement($productSize)) {
             // set the owning side to null (unless already changed)
-            if ($productSize->getProductId() === $this) {
-                $productSize->setProductId(null);
+            if ($productSize->getProduct() === $this) {
+                $productSize->setProduct(null);
             }
         }
 
@@ -145,7 +152,7 @@ class Product
     {
         if (!$this->productColors->contains($productColor)) {
             $this->productColors->add($productColor);
-            $productColor->setProductId($this);
+            $productColor->setProduct($this);
         }
 
         return $this;
@@ -155,8 +162,8 @@ class Product
     {
         if ($this->productColors->removeElement($productColor)) {
             // set the owning side to null (unless already changed)
-            if ($productColor->getProductId() === $this) {
-                $productColor->setProductId(null);
+            if ($productColor->getProduct() === $this) {
+                $productColor->setProduct(null);
             }
         }
 
@@ -175,7 +182,7 @@ class Product
     {
         if (!$this->productInfos->contains($productInfo)) {
             $this->productInfos->add($productInfo);
-            $productInfo->setProductId($this);
+            $productInfo->setProduct($this);
         }
 
         return $this;
@@ -185,22 +192,22 @@ class Product
     {
         if ($this->productInfos->removeElement($productInfo)) {
             // set the owning side to null (unless already changed)
-            if ($productInfo->getProductId() === $this) {
-                $productInfo->setProductId(null);
+            if ($productInfo->getProduct() === $this) {
+                $productInfo->setProduct(null);
             }
         }
 
         return $this;
     }
 
-    public function getSupplierId(): ?Supplier
+    public function getSupplier(): ?Supplier
     {
-        return $this->supplier_id;
+        return $this->supplier;
     }
 
-    public function setSupplierId(?Supplier $supplier_id): static
+    public function setSupplier(?Supplier $supplier): static
     {
-        $this->supplier_id = $supplier_id;
+        $this->supplier = $supplier;
 
         return $this;
     }
@@ -217,7 +224,7 @@ class Product
     {
         if (!$this->productMovements->contains($productMovement)) {
             $this->productMovements->add($productMovement);
-            $productMovement->setProductId($this);
+            $productMovement->setProduct($this);
         }
 
         return $this;
@@ -227,9 +234,36 @@ class Product
     {
         if ($this->productMovements->removeElement($productMovement)) {
             // set the owning side to null (unless already changed)
-            if ($productMovement->getProductId() === $this) {
-                $productMovement->setProductId(null);
+            if ($productMovement->getProduct() === $this) {
+                $productMovement->setProduct(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Warehouse>
+     */
+    public function getWarehouses(): Collection
+    {
+        return $this->warehouses;
+    }
+
+    public function addWarehouse(Warehouse $warehouse): static
+    {
+        if (!$this->warehouses->contains($warehouse)) {
+            $this->warehouses->add($warehouse);
+            $warehouse->addProductId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWarehouse(Warehouse $warehouse): static
+    {
+        if ($this->warehouses->removeElement($warehouse)) {
+            $warehouse->removeProductId($this);
         }
 
         return $this;

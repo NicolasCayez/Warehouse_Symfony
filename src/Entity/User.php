@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -30,6 +32,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    /**
+     * @var Collection<int, UserRoleWarehouse>
+     */
+    #[ORM\OneToMany(targetEntity: UserRoleWarehouse::class, mappedBy: 'user_id')]
+    private Collection $userRoleWarehouses;
+
+    public function __construct()
+    {
+        $this->userRoleWarehouses = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -103,5 +116,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection<int, UserRoleWarehouse>
+     */
+    public function getUserRoleWarehouses(): Collection
+    {
+        return $this->userRoleWarehouses;
+    }
+
+    public function addUserRoleWarehouse(UserRoleWarehouse $userRoleWarehouse): static
+    {
+        if (!$this->userRoleWarehouses->contains($userRoleWarehouse)) {
+            $this->userRoleWarehouses->add($userRoleWarehouse);
+            $userRoleWarehouse->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserRoleWarehouse(UserRoleWarehouse $userRoleWarehouse): static
+    {
+        if ($this->userRoleWarehouses->removeElement($userRoleWarehouse)) {
+            // set the owning side to null (unless already changed)
+            if ($userRoleWarehouse->getUser() === $this) {
+                $userRoleWarehouse->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

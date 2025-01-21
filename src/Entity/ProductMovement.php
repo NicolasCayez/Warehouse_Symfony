@@ -15,37 +15,37 @@ class ProductMovement
 
     #[ORM\ManyToOne(inversedBy: 'productMovements')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Product $product_id = null;
+    private ?Product $product = null;
 
     #[ORM\ManyToOne(inversedBy: 'productMovements')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Movement $mvmt_id = null;
+    private ?Movement $mvmt = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getProductId(): ?Product
+    public function getProduct(): ?Product
     {
-        return $this->product_id;
+        return $this->product;
     }
 
-    public function setProductId(?Product $product_id): static
+    public function setProduct(?Product $product): static
     {
-        $this->product_id = $product_id;
+        $this->product = $product;
 
         return $this;
     }
 
-    public function getMvmtId(): ?Movement
+    public function getMvmt(): ?Movement
     {
-        return $this->mvmt_id;
+        return $this->mvmt;
     }
 
-    public function setMvmtId(?Movement $mvmt_id): static
+    public function setMvmt(?Movement $mvmt): static
     {
-        $this->mvmt_id = $mvmt_id;
+        $this->mvmt = $mvmt;
 
         return $this;
     }

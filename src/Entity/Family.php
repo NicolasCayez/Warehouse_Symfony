@@ -18,7 +18,7 @@ class Family
     /**
      * @var Collection<int, Product>
      */
-    #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'family_id')]
+    #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'family')]
     private Collection $products;
 
     public function __construct()
