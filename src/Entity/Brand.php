@@ -21,6 +21,9 @@ class Brand
     #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'brand')]
     private Collection $products;
 
+    #[ORM\Column(length: 50)]
+    private ?string $brand_name = null;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -57,6 +60,18 @@ class Brand
                 $product->setBrand(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getBrandName(): ?string
+    {
+        return $this->brand_name;
+    }
+
+    public function setBrandName(string $brand_name): static
+    {
+        $this->brand_name = $brand_name;
 
         return $this;
     }

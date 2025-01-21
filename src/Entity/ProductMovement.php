@@ -21,6 +21,12 @@ class ProductMovement
     #[ORM\JoinColumn(nullable: false)]
     private ?Movement $mvmt = null;
 
+    #[ORM\Column]
+    private ?int $last_qty = null;
+
+    #[ORM\Column]
+    private ?int $new_qty = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -46,6 +52,30 @@ class ProductMovement
     public function setMvmt(?Movement $mvmt): static
     {
         $this->mvmt = $mvmt;
+
+        return $this;
+    }
+
+    public function getLastQty(): ?int
+    {
+        return $this->last_qty;
+    }
+
+    public function setLastQty(int $last_qty): static
+    {
+        $this->last_qty = $last_qty;
+
+        return $this;
+    }
+
+    public function getNewQty(): ?int
+    {
+        return $this->new_qty;
+    }
+
+    public function setNewQty(int $new_qty): static
+    {
+        $this->new_qty = $new_qty;
 
         return $this;
     }

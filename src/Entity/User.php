@@ -39,6 +39,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: UserRoleWarehouse::class, mappedBy: 'user_id')]
     private Collection $userRoleWarehouses;
 
+    #[ORM\Column(length: 50)]
+    private ?string $user_last_name = null;
+
+    #[ORM\Column(length: 50)]
+    private ?string $user_first_name = null;
+
+    #[ORM\Column(length: 13, nullable: true)]
+    private ?string $user_phone = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $user_address_number = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $user_address_road = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $user_address_label = null;
+
+    #[ORM\Column(length: 8, nullable: true)]
+    private ?string $user_address_postal_code = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $user_address_city = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $user_address_state = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $user_address_country = null;
+
     public function __construct()
     {
         $this->userRoleWarehouses = new ArrayCollection();
@@ -144,6 +174,126 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $userRoleWarehouse->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUserLastName(): ?string
+    {
+        return $this->user_last_name;
+    }
+
+    public function setUserLastName(string $user_last_name): static
+    {
+        $this->user_last_name = $user_last_name;
+
+        return $this;
+    }
+
+    public function getUserFirstName(): ?string
+    {
+        return $this->user_first_name;
+    }
+
+    public function setUserFirstName(string $user_first_name): static
+    {
+        $this->user_first_name = $user_first_name;
+
+        return $this;
+    }
+
+    public function getUserPhone(): ?string
+    {
+        return $this->user_phone;
+    }
+
+    public function setUserPhone(?string $user_phone): static
+    {
+        $this->user_phone = $user_phone;
+
+        return $this;
+    }
+
+    public function getUserAddressNumber(): ?int
+    {
+        return $this->user_address_number;
+    }
+
+    public function setUserAddressNumber(?int $user_address_number): static
+    {
+        $this->user_address_number = $user_address_number;
+
+        return $this;
+    }
+
+    public function getUserAddressRoad(): ?string
+    {
+        return $this->user_address_road;
+    }
+
+    public function setUserAddressRoad(?string $user_address_road): static
+    {
+        $this->user_address_road = $user_address_road;
+
+        return $this;
+    }
+
+    public function getUserAddressLabel(): ?string
+    {
+        return $this->user_address_label;
+    }
+
+    public function setUserAddressLabel(?string $user_address_label): static
+    {
+        $this->user_address_label = $user_address_label;
+
+        return $this;
+    }
+
+    public function getUserAddressPostalCode(): ?string
+    {
+        return $this->user_address_postal_code;
+    }
+
+    public function setUserAddressPostalCode(?string $user_address_postal_code): static
+    {
+        $this->user_address_postal_code = $user_address_postal_code;
+
+        return $this;
+    }
+
+    public function getUserAddressCity(): ?string
+    {
+        return $this->user_address_city;
+    }
+
+    public function setUserAddressCity(?string $user_address_city): static
+    {
+        $this->user_address_city = $user_address_city;
+
+        return $this;
+    }
+
+    public function getUserAddressState(): ?string
+    {
+        return $this->user_address_state;
+    }
+
+    public function setUserAddressState(?string $user_address_state): static
+    {
+        $this->user_address_state = $user_address_state;
+
+        return $this;
+    }
+
+    public function getUserAddressCountry(): ?string
+    {
+        return $this->user_address_country;
+    }
+
+    public function setUserAddressCountry(?string $user_address_country): static
+    {
+        $this->user_address_country = $user_address_country;
 
         return $this;
     }

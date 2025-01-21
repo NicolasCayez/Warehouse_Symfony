@@ -21,6 +21,9 @@ class Role
     #[ORM\OneToMany(targetEntity: UserRoleWarehouse::class, mappedBy: 'role')]
     private Collection $warehouse;
 
+    #[ORM\Column(length: 50)]
+    private ?string $role_name = null;
+
     public function __construct()
     {
         $this->warehouse = new ArrayCollection();
@@ -57,6 +60,18 @@ class Role
                 $warehouse->setRole(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRoleName(): ?string
+    {
+        return $this->role_name;
+    }
+
+    public function setRoleName(string $role_name): static
+    {
+        $this->role_name = $role_name;
 
         return $this;
     }

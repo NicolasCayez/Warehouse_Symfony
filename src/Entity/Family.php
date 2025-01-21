@@ -21,6 +21,9 @@ class Family
     #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'family')]
     private Collection $products;
 
+    #[ORM\Column(length: 50)]
+    private ?string $family_name = null;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -54,6 +57,18 @@ class Family
         if ($this->products->removeElement($product)) {
             $product->removeFamilyId($this);
         }
+
+        return $this;
+    }
+
+    public function getFamilyName(): ?string
+    {
+        return $this->family_name;
+    }
+
+    public function setFamilyName(string $family_name): static
+    {
+        $this->family_name = $family_name;
 
         return $this;
     }

@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
@@ -58,6 +59,21 @@ class Product
      */
     #[ORM\ManyToMany(targetEntity: Warehouse::class, mappedBy: 'product_id')]
     private Collection $warehouses;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $product_serial_number = null;
+
+    #[ORM\Column(length: 50)]
+    private ?string $product_name = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $product_ref = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $product_ref2 = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 8, scale: 2, nullable: true)]
+    private ?string $product_value = null;
 
     public function __construct()
     {
@@ -265,6 +281,66 @@ class Product
         if ($this->warehouses->removeElement($warehouse)) {
             $warehouse->removeProductId($this);
         }
+
+        return $this;
+    }
+
+    public function getProductSerialNumber(): ?string
+    {
+        return $this->product_serial_number;
+    }
+
+    public function setProductSerialNumber(?string $product_serial_number): static
+    {
+        $this->product_serial_number = $product_serial_number;
+
+        return $this;
+    }
+
+    public function getProductName(): ?string
+    {
+        return $this->product_name;
+    }
+
+    public function setProductName(string $product_name): static
+    {
+        $this->product_name = $product_name;
+
+        return $this;
+    }
+
+    public function getProductRef(): ?string
+    {
+        return $this->product_ref;
+    }
+
+    public function setProductRef(?string $product_ref): static
+    {
+        $this->product_ref = $product_ref;
+
+        return $this;
+    }
+
+    public function getProductRef2(): ?string
+    {
+        return $this->product_ref2;
+    }
+
+    public function setProductRef2(?string $product_ref2): static
+    {
+        $this->product_ref2 = $product_ref2;
+
+        return $this;
+    }
+
+    public function getProductValue(): ?string
+    {
+        return $this->product_value;
+    }
+
+    public function setProductValue(?string $product_value): static
+    {
+        $this->product_value = $product_value;
 
         return $this;
     }

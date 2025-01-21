@@ -17,6 +17,12 @@ class ProductColor
     #[ORM\JoinColumn(nullable: false)]
     private ?Product $product = null;
 
+    #[ORM\Column(length: 50)]
+    private ?string $product_color_name = null;
+
+    #[ORM\Column(length: 50)]
+    private ?string $product_color_label = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -30,6 +36,30 @@ class ProductColor
     public function setProduct(?Product $product): static
     {
         $this->product = $product;
+
+        return $this;
+    }
+
+    public function getProductColorName(): ?string
+    {
+        return $this->product_color_name;
+    }
+
+    public function setProductColorName(string $product_color_name): static
+    {
+        $this->product_color_name = $product_color_name;
+
+        return $this;
+    }
+
+    public function getProductColorLabel(): ?string
+    {
+        return $this->product_color_label;
+    }
+
+    public function setProductColorLabel(string $product_color_label): static
+    {
+        $this->product_color_label = $product_color_label;
 
         return $this;
     }
